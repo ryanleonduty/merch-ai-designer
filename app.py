@@ -1,11 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 
-st.markdown("""
-    <h1 style='font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;'>
-        <i class="fa-duotone fa-solid fa-hat-wizard"></i> Merch AI Designer: Custom Design Generator
-    </h1>
-    """, unsafe_allow_html=True)
+st.title('🧙 Merch AI Designer: Custom Design Generator')
 st.subheader("Create Unique, Print-Ready Designs for Your Merchandise")
 
 st.sidebar.header("Design Input")
