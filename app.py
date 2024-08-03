@@ -1,11 +1,10 @@
 import streamlit as st
 from openai import OpenAI
+import requests
 
 st.title('🧙 Merch AI Designer: Custom Design Generator')
-st.subheader("Create Unique, Print-Ready Designs for Your Merchandise")
 
 st.sidebar.header("Design Input")
-
 api_key = st.sidebar.text_input("Enter your OpenAI API Key:", type="password")
 image_description = st.sidebar.text_area("Describe the design you'd like to generate:")
 merch_text = st.sidebar.text_area("Enter any text to include in the design (leave blank for no text):")
@@ -54,21 +53,31 @@ if submit_button:
             image_url = generate_design(image_description, merch_type, merch_text, api_key)
             
             if image_url:
-                st.image(image_url, caption='Your Custom Design')
-                st.success("Design generated successfully!")
-                st.download_button(
-                    label="Download Design",
-                    data=image_url,
-                    file_name="custom_design.png",
-                    mime="image/png"
-                )
+                try:
+                    # Fetch the image data
+                    response = requests.get(image_url)
+                    response.raise_for_status()  # Raises an HTTPError for bad responses
+                    img_data = response.content
+                    
+                    # Display the image
+                    st.image(image_url, caption='Your Custom Design')
+                    st.success("Design generated successfully!")
+                    
+                    # Provide download button
+                    st.download_button(
+                        label="Download Design",
+                        data=img_data,
+                        file_name="custom_design.png",
+                        mime="image/png"
+                    )
+                except requests.RequestException as e:
+                    st.error(f"Failed to fetch the image: {str(e)}")
 
 st.sidebar.info("Note: Your API key is not stored and is only used for this session.")
 st.sidebar.markdown("---")
-
 st.sidebar.markdown("""
 ### How to use:
-1. Enter your OpenAI API key.
+1. Enter your OpenAI API Key.
 2. Describe the design you want.
 3. Add text if needed.
 4. Select merchandise type for context.
