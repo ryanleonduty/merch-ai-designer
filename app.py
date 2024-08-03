@@ -14,28 +14,17 @@ submit_button = st.sidebar.button('Generate Design')
 
 def generate_design(description, merch_type, merch_text, api_key):
     client = OpenAI(api_key=api_key)
-    prompt = f"""Create ONLY the design artwork for {merch_type}, without any mockup, background, or software interface:
-    1. Content: {description}
-    2. Text: {merch_text if merch_text else 'No text'}
-    3. Style: Vector-like, clean lines, professional look
-    4. Background: Transparent (represented as white in the image)
-    5. Format: Single, centered design element
-    6. Size: Design should fill most of the image area
-    7. Colors: Vibrant, print-friendly
-    8. IMPORTANT: Do NOT include any t-shirt outlines, mockups, software interfaces or split the design into multiple parts
-    9. Output: Only the artwork itself, as if it were a PNG file ready for printing
-    10. Perspective: Flat, front-facing design only
-
-    Remember: Generate ONLY the artwork itself, with no product or software representation whatsoever
-    Temperature: 0.1"""
-
+    prompt = f"""Create a design for {merch_type}:
+        a. Follow the user description: {description}
+        b. Include the text: {merch_text if merch_text else 'No text'}
+        c. Show only the design as it appears on the {merch_type}, without any standalone illustrations or alternative presentations."""
     try:
         response = client.images.generate(
             model="dall-e-3",
             prompt=prompt,
             size="1024x1024",
             quality="hd",
-            style="vivid",
+            style='vivid',
             n=1,
         )
         return response.data[0].url
@@ -76,6 +65,7 @@ if submit_button:
 st.sidebar.info("Note: Your API key is not stored and is only used for this session.")
 st.sidebar.markdown("---")
 st.sidebar.markdown("""
+
 ### How to use:
 1. Enter your OpenAI API Key.
 2. Describe the design you want.
