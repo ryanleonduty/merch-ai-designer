@@ -22,7 +22,7 @@ def generate_design(description, merch_type, merch_text, api_key):
         response = client.images.generate(
             model="dall-e-3",
             prompt=prompt,
-            size="1024x1024",
+            size="1792x1024",
             quality="hd",
             style='vivid',
             n=1,
