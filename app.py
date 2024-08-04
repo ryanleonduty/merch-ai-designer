@@ -23,7 +23,7 @@ def generate_design(description, merch_type, merch_text, api_key):
             model="dall-e-3",
             prompt=prompt,
             size="1792x1024",
-            quality="hd",
+            quality="standard",
             style='vivid',
             n=1,
         )
